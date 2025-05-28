@@ -36,3 +36,11 @@ wss.on("connection", (ws) => {
         console.log("🔌 Dashboard disconnected");
     });
 });
+// 🕒 Keep WebSocket connections alive with periodic ping
+setInterval(() => {
+    wss.clients.forEach((client) => {
+        if (client.readyState === WebSocket.OPEN) {
+            client.send(JSON.stringify({ type: "ping" }));
+        }
+    });
+}, 30000); // every 30 seconds
